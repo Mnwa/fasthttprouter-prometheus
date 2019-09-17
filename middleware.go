@@ -1,11 +1,11 @@
-package fasthttpprometheus
+package fasthttprouter_prometheus
 
 import (
 	"strconv"
 	"sync"
 	"time"
 
-	"github.com/buaazp/fasthttprouter"
+	"github.com/fasthttp/router"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/valyala/fasthttp"
@@ -23,7 +23,7 @@ type Prometheus struct {
 	reqCnt            *prometheus.CounterVec
 	reqDur            *prometheus.HistogramVec
 	reqSize, respSize prometheus.Summary
-	router            *fasthttprouter.Router
+	router            *router.Router
 
 	MetricsPath string
 }
@@ -42,7 +42,7 @@ func prometheusHandler() fasthttp.RequestHandler {
 	return fasthttpadaptor.NewFastHTTPHandler(promhttp.Handler())
 }
 
-func (p *Prometheus) WrapHandler(r *fasthttprouter.Router) fasthttp.RequestHandler {
+func (p *Prometheus) WrapHandler(r *router.Router) fasthttp.RequestHandler {
 
 	// Setting prometheus metrics handler
 	r.GET(p.MetricsPath, prometheusHandler())
@@ -79,7 +79,7 @@ func computeApproximateRequestSize(ctx *fasthttp.Request, out chan int) {
 		s += len(ctx.URI().Path())
 		s += len(ctx.URI().Host())
 	}
-	
+
 	s += len(ctx.Header.Method())
 	s += len("HTTP/1.1")
 
@@ -143,8 +143,8 @@ func acquireRequestFromPool() *fasthttp.Request {
 
 	if rp == nil {
 		return new(fasthttp.Request)
-	} 
-	
+	}
+
 	frc := rp.(*fasthttp.Request)
 	return frc
 }

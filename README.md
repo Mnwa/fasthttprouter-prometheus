@@ -1,6 +1,6 @@
 # fasthttp-prometheus
 
-Prometheus metrics exporter for go fasthttp framework
+Prometheus metrics exporter for go fasthttp/router 
 
 ## Installation
 
@@ -13,10 +13,10 @@ package main
 
 import (
     "fmt"
-    "github.com/buaazp/fasthttprouter"
+    "github.com/fasthttp/router"
     "github.com/valyala/fasthttp"
+    "github.com/Mnwa/fasthttprouter-prometheus"
     "log"
-    fastp "go-fasthttp-prometheus"
 )
 
 func Index(ctx *fasthttp.RequestCtx) {
@@ -24,11 +24,11 @@ func Index(ctx *fasthttp.RequestCtx) {
 }
 
 func main() {
-    router := fasthttprouter.New()
-    APIregist(router)
+    r := router.New()
+    APIregist(r)
 
-    p := fastp.NewPrometheus("fasthttp")
-    fastpHandler := p.WrapHandler(router)
+    p := fasthttprouter_prometheus.NewPrometheus("fasthttp")
+    fastpHandler := p.WrapHandler(r)
 
     log.Fatal(fasthttp.ListenAndServe(":8080", fastpHandler))
 }
@@ -41,7 +41,7 @@ func APIregist(r *fasthttprouter.Router) {
 ## Related Project
 
 * [fasthttp](https://github.com/valyala/fasthttp)
-* [fasthttprouter](https://github.com/buaazp/fasthttprouter)
+* [fasthttp/router](https://github.com/fasthttp/router)
 
 ## Inspired by
 
