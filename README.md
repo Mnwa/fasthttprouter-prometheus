@@ -4,7 +4,7 @@ Prometheus metrics exporter for go fasthttp/router
 
 ## Installation
 
-`$ go get github.com/flf2ko/fasthttp-prometheus`
+`$ go get github.com/Mnwa/fasthttprouter-prometheus`
 
 ## Usage
 
